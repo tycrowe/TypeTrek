@@ -1,0 +1,343 @@
+{
+  "settings": {
+    "name": "The Lost Amulet of Eldoria",
+    "description": "A text-based adventure game.",
+    "starting_location": "quiet_inn"
+  },
+  "dice": [
+    {
+      "type": "d4",
+      "sides": 4
+    },
+    {
+      "type": "d6",
+      "sides": 6
+    },
+    {
+      "type": "d10",
+      "sides": 10
+    },
+    {
+      "type": "d20",
+      "sides": 20
+    }
+  ],
+  "stats": {
+    "health": 100,
+    "attack": 0,
+    "defense": 0,
+    "gold": 10,
+    "starting_items": [
+      "potion"
+    ],
+    "starting_equipment": [
+      "plain_clothes"
+    ]
+  },
+  "items": [
+    {
+      "id": "gold",
+      "name": "Gold",
+      "description": "A shiny gold coin.",
+      "type": "currency",
+      "properties": {
+        "value": 1
+      }
+    },
+    {
+      "id": "potion",
+      "name": "Potion",
+      "description": "A potion that restores 10 health.",
+      "type": "consumable",
+      "properties": {
+        "health": 10
+      }
+    },
+    {
+      "id": "hammer",
+      "name": "Hammer",
+      "description": "A hammer. Great for attack.",
+      "type": "weapon",
+      "properties": {
+        "attack": 5,
+        "hands": 2
+      }
+    },
+    {
+      "id": "sword",
+      "name": "Sword",
+      "description": "A sword. Great for attack.",
+      "type": "weapon",
+      "properties": {
+        "attack": 10,
+        "hands": 1
+      }
+    },
+    {
+      "id": "shield",
+      "name": "Shield",
+      "description": "A shield. Great for defense.",
+      "type": "armor",
+      "properties": {
+        "defense": 5,
+        "hands": 1
+      }
+    },
+    {
+      "id": "plain_clothes",
+      "name": "Plain Clothes",
+      "description": "Plain clothes. Light armor.",
+      "type": "armor",
+      "properties": {
+        "defense": 2
+      }
+    },
+    {
+      "id": "leather_armor",
+      "name": "Leather Armor",
+      "description": "Leather armor. Light armor.",
+      "type": "armor",
+      "properties": {
+        "defense": 10
+      }
+    },
+    {
+      "id": "chain_mail",
+      "name": "Chain Mail",
+      "description": "Chain mail. Heavy armor.",
+      "type": "armor",
+      "properties": {
+        "defense": 15
+      }
+    },
+    {
+      "id": "beer",
+      "name": "Beer",
+      "description": "A mug of beer.",
+      "type": "consumable",
+      "properties": {
+        "health": -3,
+        "status": "drunk",
+        "duration": 2
+      }
+    },
+    {
+      "id": "bow",
+      "name": "Bow",
+      "description": "A bow. Great for ranged attacks.",
+      "type": "range_weapon",
+      "properties": {}
+    },
+    {
+      "id": "arrow",
+      "name": "Arrow",
+      "description": "An arrow. Used with a bow.",
+      "type": "ammo",
+      "properties": {
+        "attack": 5
+      }
+    }
+  ],
+  "locations": [
+    {
+      "id": "quiet_inn",
+      "name": "Quiet Inn",
+      "description": "A quiet inn with a few patrons. The air is thick with smoke and the smell of stale beer. An innkeeper stands behind the bar. There is a door leading outside.",
+      "choices": [
+        {
+          "settings": {
+            "hidden": false
+          },
+          "action": "talk",
+          "target": "innkeeper",
+          "description": "Talk to the innkeeper",
+          "interaction": [
+            "<You approach the bar, the innkeeper eyes you nervously>{wait(2)}",
+            "Innkeeper: Welcome to my inn. Have you heard the rumor about the Lost Amulet of Eldoria?{wait(4)}",
+            "You: No, I haven't. What is it? I'm looking for a quest.{wait(1)}",
+            "<He pauses. Searching for the right words.>{wait(2)}",
+            "<He leans in closely>{wait(1)}",
+            "Innkeeper: It is said that the Lost Amulet of Eldoria is hidden in the forest. It is said that the amulet grants the wearer immortality. That's all I know. Excuse me.{wait(5)}",
+            "<The innkeeper walks away. Hurriedly serving another patron.{wait(3)}>",
+            "{remove_action}"
+          ]
+        },
+        {
+          "settings": {
+            "hidden": false,
+            "exposes_actions": [
+              "investigate chest"
+            ]
+          },
+          "action": "look",
+          "description": "Look around the inn",
+          "interaction": [
+            "You look around the inn. There are a few patrons sitting at tables. The innkeeper is behind the bar. There is a door leading outside. {wait(2)}",
+            "{conditional_on(investigate chest)}You notice a chest behind the bar. It looks like it might be locked.{wait(2)}",
+            "{break}"
+          ]
+        },
+        {
+          "settings": {
+            "hidden": true,
+            "chances": 0.25
+          },
+          "choice_refs": {
+              "fight drunk patron": {
+                "yes": {
+                  "description": "You decide to fight the drunk patron!",
+                  "difficulty": {
+                    "type": "d20",
+                    "moreThan": 21
+                  },
+                  "success": {
+                    "description": "You win the fight. You find 10 gold on the drunk patron.",
+                    "rewards": [
+                      {
+                        "type": "item",
+                        "item": "gold",
+                        "quantity": 10
+                      }
+                    ]
+                  },
+                  "fail": {
+                    "description": "You lose the fight. You lose 5 health.",
+                    "consequences": [
+                      {
+                        "type": "stat",
+                        "properties": {
+                          "stat": "health",
+                          "value": -5
+                        }
+                      }
+                    ]
+                  }
+                },
+                "no": {
+                  "description": "You decide not to fight the drunk patron."
+                }
+              }
+            },
+          "action": "speak with drunk patron",
+          "description": "A patron is being rowdy.",
+          "interaction": [
+            "<The man appears to be very drunk, drool dribbles from his jaw>{wait(3)}",
+            "Him: Hey! You!{wait(1)}",
+            "<The man stumbles over to you.>",
+            "Him: I bet *hic*, I bet! I bet, I can beat you in a *hic* fight.{wait(3)}",
+            "Him: I'll wager...{wait(2)}",
+            "Him: 10 gold! *hic*{wait(2)}",
+            "Fight him? {choice_ref(fight drunk patron)}",
+            "{break}"
+          ]
+        },
+        {
+          "action": "leave",
+          "description": "Leave the inn",
+          "interaction": [
+            "You find the door and leave the inn.",
+            "{trigger_path}"
+          ],
+          "trigger_path": "quiet_inn_path_1"
+        },
+        {
+          "action": "investigate chest",
+          "description": "Investigate the chest",
+          "interaction": [
+            "You investigate the chest. It is locked. You may be able to pick the lock.{wait(5)}",
+            "{break}"
+          ],
+          "settings": {
+            "hidden": true,
+            "exposes_actions": [
+              "break lock on chest"
+            ]
+          }
+        },
+        {
+          "settings": {
+            "hidden": true,
+            "difficulty": {
+              "type": "d20",
+              "moreThan": 1
+            },
+            "success": {
+              "description": "You break the lock on the chest. You find a potion inside.",
+              "rewards": [
+                {
+                  "type": "item",
+                  "item": "potion",
+                  "quantity": 1
+                }
+              ]
+            },
+            "fail": {
+              "description": "You try to break the lock on the chest but fail. The innkeeper notices you and asks you to leave.",
+              "consequences": [
+                {
+                  "type": "advance_area",
+                  "properties": {
+                    "area": "forest"
+                  }
+                }
+              ]
+            },
+            "finally": {
+              "remove_actions": [
+                "investigate chest",
+                "break lock on chest"
+              ]
+            }
+          },
+          "action": "break lock on chest",
+          "description": "Break the lock on the chest",
+          "interaction": [
+            "You attempt to break the lock.{wait(2)}",
+            "{roll}",
+            "{wait(2)}",
+            "{break}"
+          ]
+        }
+      ],
+      "paths": [
+        {
+          "id": "quiet_inn_path_1",
+          "name": "Leave the inn",
+          "description": "You leave the inn.",
+          "destination": "forest"
+        }
+      ]
+    },
+    {
+      "id": "forest",
+      "name": "Forest",
+      "description": "A dark forest. You can hear the sounds of animals in the distance. There is a path leading to a clearing.",
+      "choices": [
+        {
+          "action": "look",
+          "description": "Look around the forest",
+          "interaction": [
+            "You look around the forest. It is dark and you can hear the sounds of animals in the distance. There is a path leading to a clearing.{wait(2)}",
+            "{break}"
+          ]
+        },
+        {
+          "action": "leave",
+          "description": "Leave the forest",
+          "interaction": [
+            "You find the path and leave the forest."
+          ],
+          "trigger_path": "forest_path_1"
+        }
+      ],
+      "paths": [
+        {
+          "id": "forest_path_1",
+          "name": "Leave the forest",
+          "description": "You leave the forest.",
+          "destination": "quiet_inn"
+        }
+      ]
+    }
+  ]
+}
