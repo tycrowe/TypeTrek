@@ -1,0 +1,3 @@
+It’s 'A Choose Your Own Adventure' story. The game should have a storyline with different paths and endings based on the
+player’s choices. Students can use lists, tuples, and dictionaries to store game data such as items, locations,
+and characters. They can also use object-oriented programming concepts to create classes for different game elements.
