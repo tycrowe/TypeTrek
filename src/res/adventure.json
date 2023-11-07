@@ -180,44 +180,73 @@
         {
           "settings": {
             "hidden": true,
-            "chances": 0.25
+            "chances": 0.80
           },
           "choice_refs": {
-              "fight drunk patron": {
-                "yes": {
-                  "description": "You decide to fight the drunk patron!",
-                  "difficulty": {
-                    "type": "d20",
-                    "moreThan": 21
-                  },
-                  "success": {
-                    "description": "You win the fight. You find 10 gold on the drunk patron.",
-                    "rewards": [
-                      {
-                        "type": "item",
-                        "item": "gold",
-                        "quantity": 10
-                      }
-                    ]
-                  },
-                  "fail": {
-                    "description": "You lose the fight. You lose 5 health.",
-                    "consequences": [
-                      {
-                        "type": "stat",
-                        "properties": {
-                          "stat": "health",
-                          "value": -5
-                        }
-                      }
-                    ]
-                  }
+            "fight drunk patron": {
+              "yes": {
+                "description": "You decide to fight the drunk patron!",
+                "difficulty": {
+                  "type": "d20",
+                  "moreThan": 21
                 },
-                "no": {
-                  "description": "You decide not to fight the drunk patron."
+                "success": {
+                  "description": "You win the fight. You find 10 gold on the drunk patron.",
+                  "rewards": [
+                    {
+                      "type": "item",
+                      "item": "gold",
+                      "quantity": 10
+                    }
+                  ]
+                },
+                "fail": {
+                  "description": "You lose the fight. You lose 5 health.",
+                  "consequences": [
+                    {
+                      "type": "stat",
+                      "properties": {
+                        "stat": "health",
+                        "value": -5
+                      }
+                    }
+                  ]
                 }
+              },
+              "intimidate": {
+                "description": "You decide to intimidate the drunk patron!",
+                "difficulty": {
+                  "type": "d20",
+                  "moreThan": 15
+                },
+                "success": {
+                  "description": "Him: *hic* I'm sorry. I didn't mean to cause any trouble. Here, take this. *hic*{wait(3)}",
+                  "rewards": [
+                    {
+                      "type": "item",
+                      "item": "gold",
+                      "quantity": 20
+                    }
+                  ]
+                },
+                "fail": {
+                  "description": "You fail to intimidate the drunk patron. He punches you in the face. You lose 5 health.",
+                  "consequences": [
+                    {
+                      "type": "stat",
+                      "properties": {
+                        "stat": "health",
+                        "value": -5
+                      }
+                    }
+                  ]
+                }
+              },
+              "no": {
+                "description": "You decide not to fight the drunk patron."
               }
-            },
+            }
+          },
           "action": "speak with drunk patron",
           "description": "A patron is being rowdy.",
           "interaction": [

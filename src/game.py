@@ -708,5 +708,6 @@ class GameEngine:
 
 
 if __name__ == '__main__':
-    game = Game("res/adventure.json")
+    file_path = "./src/res/adventure.json"
+    game = Game(file_path)
     engine = GameEngine(game)
